@@ -51,6 +51,53 @@ def _request(path, params=None, method='GET', data=None, headers=None):
     return response.read()
 
 
+def output(yd_res):
+    # print yd_res
+    feedback = Feedback()
+
+    # 添加默认的结果
+    phonetic = ""
+    phonetic2 = ""
+    if "basic" in yd_res:
+        if "phonetic" in yd_res["basic"]:
+            phonetic = " 英 [" + yd_res["basic"]["phonetic"] + "]"
+        if "us-phonetic" in yd_res["basic"]:
+            phonetic2 = " 美 [" + yd_res["basic"]["us-phonetic"] + "]"
+
+    trs_str = ''
+    if "translation" in yd_res:
+        for trs in yd_res["translation"]:
+            trs_str = trs_str + trs + '; '
+    else:
+        trs_str = '无结果'
+
+    title = trs_str + phonetic + phonetic2
+    feedback.addItem(title=title, subtitle=yd_res["query"])
+
+    if "basic" in yd_res:
+        if "explains" in yd_res["basic"]:
+            for explain in yd_res["basic"]["explains"]:
+                item = {
+                    "title": explain,
+                    "arg": explain
+                }
+                feedback.addItem(**item)
+
+    if "web" in yd_res:
+        for web in yd_res["web"]:
+            web_str = ''
+            for web_i in web["value"]:
+                web_str = web_str + web_i + "; "
+            item = {
+                "title": web_str,
+                "subtitle": web["key"],
+                "arg": web_str
+            }
+            feedback.addItem(**item)
+
+    feedback.output()
+
+
 def search(word, appKey, appSecretppKey):
     feedback = Feedback()
 
@@ -84,34 +131,37 @@ def search(word, appKey, appSecretppKey):
     # print hasattr(result, "translation")
     # print "translation" in result
 
-    trs_str = ''
-    if "translation" in result:
-        for trs in result["translation"]:
-            trs_str = trs_str + trs + '; '
-    else:
-        trs_str = '无结果'
+    # trs_str = ''
+    # if "translation" in result:
+    #     for trs in result["translation"]:
+    #         trs_str = trs_str + trs + '; '
+    # else:
+    #     trs_str = '无结果'
+    #
+    # web_str = ''
+    # if "web" in result:
+    #     for web in result["web"]:
+    #         for web_i in web["value"]:
+    #             web_str = web_str + web_i + "; "
+    # else:
+    #     web_str = '无'
+    #
+    # phonetic = ""
+    # if "basic" in result and "phonetic" in result["basic"]:
+    #     phonetic =  " [" + result["basic"]["phonetic"] + "]"
+    #
+    # item = {
+    #     "title": word + ": " + trs_str + phonetic,
+    #     "subtitle": "网络释义: " + web_str,
+    #     "arg": result["translation"][0]
+    # }
+    #
+    # # feedback.addItem(title=title, arg=res_word)
+    # feedback.addItem(**item)
+    # feedback.output()
 
-    web_str = ''
-    if "web" in result:
-        for web in result["web"]:
-            for web_i in web["value"]:
-                web_str = web_str + web_i + "; "
-    else:
-        web_str = '无'
+    output(result)
 
-    phonetic = ""
-    if "basic" in result and "phonetic" in result["basic"]:
-        phonetic =  " [" + result["basic"]["phonetic"] + "]"
-
-    item = {
-        "title": word + ": " + trs_str + phonetic,
-        "subtitle": "网络释义: " + web_str,
-        "arg": result["translation"][0]
-    }
-
-    # feedback.addItem(title=title, arg=res_word)
-    feedback.addItem(**item)
-    feedback.output()
 
 
 def yd_search():
