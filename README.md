@@ -1,18 +1,18 @@
 # Alfred 上的翻译插件
 - 触发后的效果
-![logo.png](imgs/8881651916818_.pic_hd.jpg)
+![logo.png](imgs/8961652081225_.pic.jpg)
   
 - 单词英译中
-![logo.png](imgs/8891651916836_.pic_hd.jpg)
+![logo.png](imgs/8971652081236_.pic.jpg)
 
 - 单词中译英  
-![logo.png](imgs/8901651916847_.pic_hd.jpg)
+![logo.png](imgs/8981652081261_.pic.jpg)
 
 - 短句中译英
-![logo.png](imgs/8911651916859_.pic_hd.jpg)
+![logo.png](imgs/8991652081283_.pic.jpg)
 
 - 短句英译中
-![logo.png](imgs/8921651916872_.pic_hd.jpg)
+![logo.png](imgs/9001652081305_.pic.jpg)
   
 
 
@@ -44,8 +44,7 @@
 
 
 ### 2. 快捷键
-command + shift + f
-或者在Alfred中输入关键字 ts
+在Alfred中输入关键字 ts
 
 -----
 

@@ -91,7 +91,8 @@ def output(yd_res):
             item = {
                 "title": web_str,
                 "subtitle": web["key"],
-                "arg": web_str
+                "arg": web_str,
+                "icon": "imgs/net.png"
             }
             feedback.addItem(**item)
 
