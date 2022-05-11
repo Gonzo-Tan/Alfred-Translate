@@ -146,7 +146,10 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string># 1.0版本暂时只支持有道翻译，后续会继续迭代支持更多平台
+	<string>https://github.com/Gonzo-Tan/Alfred-Translate
+
+
+# 1.0版本暂时只支持有道翻译，后续会继续迭代支持更多平台
 
 # 配置有道 KEYS
 

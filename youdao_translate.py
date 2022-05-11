@@ -65,14 +65,16 @@ def output(yd_res):
             phonetic2 = " 美 [" + yd_res["basic"]["us-phonetic"] + "]"
 
     trs_str = ''
+    trs_0 = ''
     if "translation" in yd_res:
         for trs in yd_res["translation"]:
             trs_str = trs_str + trs + '; '
+        trs_0 = yd_res["translation"][0]
     else:
         trs_str = '无结果'
 
     title = trs_str + phonetic + phonetic2
-    feedback.addItem(title=title, subtitle=yd_res["query"])
+    feedback.addItem(title=title, subtitle=yd_res["query"], arg=trs_0)
 
     if "basic" in yd_res:
         if "explains" in yd_res["basic"]:
@@ -100,8 +102,6 @@ def output(yd_res):
 
 
 def search(word, appKey, appSecretppKey):
-    feedback = Feedback()
-
     q = word
 
     data = {}
@@ -121,48 +121,8 @@ def search(word, appKey, appSecretppKey):
 
     response = _request(YOUDAO_URL, '', 'POST', urllib.urlencode(data), DEFAULT_HEADERS)
     result = json.loads(response)
-    # print response
-    # print 'test'
-    # result = {'translation': 'translation', 'query': 'query'}
-
-    # res_word = str(result['translation'][0])
-    # pron = str(result['query'])
-    # title = "%s [%s]" % (res_word, pron)
-
-    # print hasattr(result, "translation")
-    # print "translation" in result
-
-    # trs_str = ''
-    # if "translation" in result:
-    #     for trs in result["translation"]:
-    #         trs_str = trs_str + trs + '; '
-    # else:
-    #     trs_str = '无结果'
-    #
-    # web_str = ''
-    # if "web" in result:
-    #     for web in result["web"]:
-    #         for web_i in web["value"]:
-    #             web_str = web_str + web_i + "; "
-    # else:
-    #     web_str = '无'
-    #
-    # phonetic = ""
-    # if "basic" in result and "phonetic" in result["basic"]:
-    #     phonetic =  " [" + result["basic"]["phonetic"] + "]"
-    #
-    # item = {
-    #     "title": word + ": " + trs_str + phonetic,
-    #     "subtitle": "网络释义: " + web_str,
-    #     "arg": result["translation"][0]
-    # }
-    #
-    # # feedback.addItem(title=title, arg=res_word)
-    # feedback.addItem(**item)
-    # feedback.output()
 
     output(result)
-
 
 
 def yd_search():
