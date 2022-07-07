@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os, json, time, shutil
 
-import core
+from alfred.core import *
 ##
 # {
 #     'expire_time'    : 0,
@@ -14,7 +14,7 @@ CACHE_DEFAULT_EXPIRE = 60 * 60 * 24
 
 class Cache(object):
     def __init__(self):
-        self.cache_dir = os.path.join(CACHE_FOLDER, core.bundleID())
+        self.cache_dir = os.path.join(CACHE_FOLDER, bundleID())
         if not os.path.exists(self.cache_dir):
             os.makedirs(self.cache_dir)
 
@@ -28,7 +28,7 @@ class Cache(object):
         try:
             with open(path, 'r') as f:
                 cache = json.load(f)
-        except Exception, e:
+        except Exception as e:
             os.remove(path)
             return
         # 过期
@@ -46,7 +46,7 @@ class Cache(object):
                     'data'          : data
                 }
                 json.dump(cache, f)
-        except Exception, e:
+        except Exception as e:
             pass
 
     def delete(self, name):

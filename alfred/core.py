@@ -11,7 +11,7 @@ def bundleID():
     try:
         info = plistlib.readPlist(path)
         BundleID = info['bundleid']
-    except Exception, e:
+    except Exception as e:
         raise Exception('get Bundle ID fail. {}'.format(e))
     return BundleID
 

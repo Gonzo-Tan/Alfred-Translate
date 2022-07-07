@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
 import sys
 import uuid
-import urllib
-import urllib2
+from urllib import request, parse
 import hashlib
 import json
 import time
 import argparse
 from alfred.feedback import Feedback
 import os
+import ssl
+#import requests
+
+from imp import reload
 
 reload(sys)
-sys.setdefaultencoding('utf-8')
+
+ssl._create_default_https_context = ssl._create_unverified_context
 
 YOUDAO_URL = 'https://openapi.youdao.com/api'
 
@@ -27,28 +31,25 @@ def encrypt(signStr):
 def truncate(q):
     if q is None:
         return None
-    q_utf8 = q.decode("utf-8")
-    size = len(q_utf8)
-    return q_utf8 if size <= 20 else q_utf8[0:10] + str(size) + q_utf8[size - 10:size]
+    size = len(q)
+    return q if size <= 20 else q[0:10] + str(size) + q[size - 10:size]
 
 
-def do_request(data):
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-    return requests.post(YOUDAO_URL, data=data, headers=headers)
+#def do_request(data):
+    #return requests.post(YOUDAO_URL, data=data, headers=DEFAULT_HEADERS)
 
 
 def _request(path, params=None, method='GET', data=None, headers=None):
     params = params or {}
     headers = headers or {}
     if params:
-        url = path + '?' + urllib.urlencode(params)
+        url = path + '?' + parse.urlencode(params)
     else:
         url = path
-
-    request = urllib2.Request(url, data, headers)
-    request.get_method = lambda: method
-    response = urllib2.urlopen(request)
-    return response.read()
+    data = parse.urlencode(data).encode('utf-8')
+    req = request.Request(url, data=data, headers=headers, method=method)
+    res = request.urlopen(req, timeout=10).read()
+    return res
 
 
 def output(yd_res):
@@ -119,9 +120,9 @@ def search(word, appKey, appSecretppKey):
     data['sign'] = sign
     data['vocabId'] = "您的用户词表ID"
 
-    response = _request(YOUDAO_URL, '', 'POST', urllib.urlencode(data), DEFAULT_HEADERS)
+    response = _request(YOUDAO_URL, data=data, method="POST", headers=DEFAULT_HEADERS)
+    #response = do_request(data)
     result = json.loads(response)
-
     output(result)
 
 
@@ -140,4 +141,4 @@ def yd_search():
 
 
 if __name__ == '__main__':
-    yd_search()
+    search("love", "6815d7d0d75ccd6b", "SNVjyMTLEwtbDGo84gHJ5aqZKEJvkzdU")

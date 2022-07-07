@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os, json
 
-import core
+from alfred.core import *
 
 CONFIG_FOLDER = os.path.expanduser('~/Library/Application Support/Alfred 2/Workflow Data/')
 
@@ -9,7 +9,7 @@ class Config(object):
     def __init__(self, config_file = 'config.json'):
         self.configs = {}
         self.configFile = ''
-        path = os.path.join(CONFIG_FOLDER, core.bundleID())
+        path = os.path.join(CONFIG_FOLDER, bundleID())
         if not os.path.exists(path):
             os.makedirs(path)
         self.configFile = os.path.join(path, config_file)
@@ -17,7 +17,7 @@ class Config(object):
             try:
                 with open(self.configFile, 'r') as f:
                     self.configs = json.load(f)
-            except Exception, e:
+            except Exception as e:
                 pass
         if not isinstance(self.configs, dict):
             self.configs = {}
